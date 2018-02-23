@@ -1,0 +1,7 @@
+security:
+  basic:
+    enabled: false
+    
+server:
+  port: 8080
+  contextPath: /scd-api
