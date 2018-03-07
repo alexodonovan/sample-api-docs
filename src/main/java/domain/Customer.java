@@ -5,55 +5,69 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Customer {
 
-    private final Address address;
-    private final Name name;
-    private final PPSN ppsn;
-    private final SSCN sscn;
+	private Address address;
+	private Name name;
+	private PPSN ppsn;
+	private SSCN sscn;
 
-    public Customer(Address address, Name name, PPSN ppsn, SSCN sscn) {
-        this.address = address;
-        this.name = name;
-        this.ppsn = ppsn;
-        this.sscn = sscn;
-    }
+	public Customer() {
+	}
 
-    public Address getAddress() {
-        return address;
-    }
+	public Customer(Address address, Name name, PPSN ppsn, SSCN sscn) {
+		this.address = address;
+		this.name = name;
+		this.ppsn = ppsn;
+		this.sscn = sscn;
+	}
 
-    public Name getName() {
-        return name;
-    }
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
-    public PPSN getPpsn() {
-        return ppsn;
-    }
+	public void setName(Name name) {
+		this.name = name;
+	}
 
-    public SSCN getSscn() {
-        return sscn;
-    }
+	public void setPpsn(PPSN ppsn) {
+		this.ppsn = ppsn;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
+	public void setSscn(SSCN sscn) {
+		this.sscn = sscn;
+	}
 
-        if (o == null || getClass() != o.getClass()) return false;
+	public Address getAddress() {
+		return address;
+	}
 
-        Customer customer = (Customer) o;
+	public Name getName() {
+		return name;
+	}
 
-        return new EqualsBuilder().append(address, customer.address)
-                                  .append(name, customer.name)
-                                  .append(ppsn, customer.ppsn)
-                                  .append(sscn, customer.sscn)
-                                  .isEquals();
-    }
+	public PPSN getPpsn() {
+		return ppsn;
+	}
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(address)
-                                          .append(name)
-                                          .append(ppsn)
-                                          .append(sscn)
-                                          .toHashCode();
-    }
+	public SSCN getSscn() {
+		return sscn;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		Customer customer = (Customer) o;
+
+		return new EqualsBuilder().append(address, customer.address).append(name, customer.name)
+				.append(ppsn, customer.ppsn).append(sscn, customer.sscn).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37).append(address).append(name).append(ppsn).append(sscn).toHashCode();
+	}
 }
