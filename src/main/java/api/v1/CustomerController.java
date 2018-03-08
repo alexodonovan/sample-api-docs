@@ -16,10 +16,40 @@ import domain.Name;
 import domain.SSCN;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Contact;
+import io.swagger.annotations.ExternalDocs;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.License;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 
 @RestController
 @RequestMapping(value = "v2/customer", produces = { "application/json" })
-@Api(value = "Customer Controller")
+//@Api
+@SwaggerDefinition(
+        info = @Info(
+                description = "Add or update a SCD customer",
+                version = "V1.0.0",
+                title = "The Customer API",
+                termsOfService = "http://theweatherapi.io/terms.html",
+                contact = @Contact(
+                   name = "Robert Tulley", 
+                   email = "rtulley@fexco.com", 
+                   url = "http://www.fexco.com"
+                ),
+                license = @License(
+                   name = "Apache 2.0", 
+                   url = "http://www.apache.org/licenses/LICENSE-2.0"
+                )
+        ),
+        consumes = {"application/json"},
+        produces = {"application/json"},
+        schemes = {SwaggerDefinition.Scheme.HTTP, SwaggerDefinition.Scheme.HTTPS},
+        tags = {
+                @Tag(name = "Private", description = "Tag used to denote operations as private")
+        }, 
+        externalDocs = @ExternalDocs(value = "External Docs here", url = "http://theweatherapi.io/meteorology.html")
+)
 public class CustomerController {
 
 	@ApiOperation(value = "Add a new customer to the SCD")
