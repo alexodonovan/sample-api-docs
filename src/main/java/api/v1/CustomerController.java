@@ -9,47 +9,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import domain.Address;
 import domain.Customer;
 import domain.CustomerTestData;
-import domain.Name;
-import domain.SSCN;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Contact;
-import io.swagger.annotations.ExternalDocs;
-import io.swagger.annotations.Info;
-import io.swagger.annotations.License;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
 
 @RestController
-@RequestMapping(value = "v2/customer", produces = { "application/json" })
-//@Api
-@SwaggerDefinition(
-        info = @Info(
-                description = "Add or update a SCD customer",
-                version = "V1.0.0",
-                title = "The Customer API",
-                termsOfService = "http://theweatherapi.io/terms.html",
-                contact = @Contact(
-                   name = "Robert Tulley", 
-                   email = "rtulley@fexco.com", 
-                   url = "http://www.fexco.com"
-                ),
-                license = @License(
-                   name = "Apache 2.0", 
-                   url = "http://www.apache.org/licenses/LICENSE-2.0"
-                )
-        ),
-        consumes = {"application/json"},
-        produces = {"application/json"},
-        schemes = {SwaggerDefinition.Scheme.HTTP, SwaggerDefinition.Scheme.HTTPS},
-        tags = {
-                @Tag(name = "Private", description = "Tag used to denote operations as private")
-        }, 
-        externalDocs = @ExternalDocs(value = "External Docs here", url = "http://theweatherapi.io/meteorology.html")
-)
+@RequestMapping(value = "v1/customer", produces = { "application/json" })
+@Api
 public class CustomerController {
 
 	@ApiOperation(value = "Add a new customer to the SCD")
@@ -67,20 +34,6 @@ public class CustomerController {
 		// Update customer
 	}
 
-	@ApiOperation(value = "Update a customers address")
-	@RequestMapping(value = "address/{sscn}", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void address(@PathVariable(value = "sscn") String sscn, @RequestBody Address newAddress) {
-		// Update address
-	}
-
-	@ApiOperation(value = "Update a customers name")
-	@RequestMapping(value = "name/{sscn}", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void name(@PathVariable(value = "sscn") SSCN sscn, @RequestBody Name newName) {
-		// Update name
-	}
-
 	@ApiOperation(value = "View a customer's details via SSCN", response = Customer.class)
 	@RequestMapping(value = "{sscn}", method = RequestMethod.GET, produces = { "application/json" })
 	@ResponseBody
@@ -95,11 +48,11 @@ public class CustomerController {
 		return CustomerTestData.customer();
 	}
 
-	@ApiOperation(value = "View a customer's details via PPSN", response = Customer.class)
-	@RequestMapping(value = "ppsn/{ppsn}", method = RequestMethod.GET)
-	@ResponseBody
-	public Customer ppsn(@PathVariable(value = "ppsn") String ppsn) {
-		return CustomerTestData.customer();
+	@ApiOperation(value = "Delete a customer from the SCD")
+	@RequestMapping(value = "{sscn}", method = RequestMethod.DELETE)
+	@ResponseStatus(code = HttpStatus.NO_CONTENT, reason = "The customer was successfully delete")
+	public void delete(@PathVariable(value = "sscn") String sscn) {
+
 	}
 
 }
