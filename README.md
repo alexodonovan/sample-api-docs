@@ -1,4 +1,4 @@
-# Sample SCD REST API 
+# Sample REST API 
  
 This project uses [Spring Boot](https://spring.io/guides/gs/spring-boot/). 
  
@@ -24,4 +24,4 @@ When the application has built successfully it can be started with:
 mvn spring-boot:run 
 ``` 
  
-You can then check the swagger docs for the [SCD REST API](http://localhost:8080/scd-api/swagger-ui.html) 
+You can then check the swagger docs for the [REST API](http://localhost:8080/scd-api/swagger-ui.html) 
