@@ -8,87 +8,104 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Address {
 
-	private String addressLine1;
+    private String addressLine1;
 
-	private String addressLine2;
+    private String addressLine2;
 
-	private String addressLine3;
+    private String postCode;
 
-	private String addressLine4;
+    private String city;
 
-	@JsonProperty("eircode")
-	private Eircode eircode;
+    private String county;
 
-	private County county;
+    private String country;
 
-	public Address() {
-	}
+    @JsonCreator
+    public Address(@JsonProperty("addressLine1") String addressLine1, @JsonProperty("addressLine2") String addressLine2,
+            @JsonProperty("city") String city, @JsonProperty("county") String county,
+            @JsonProperty("country") String country, @JsonProperty("postCode") String postCode) {
+        super();
+        this.addressLine1 = addressLine1;
+        this.addressLine2 = addressLine2;
+        this.city = city;
+        this.county = county;
+        this.country = country;
+        this.postCode = postCode;
+    }
 
-	public Address(String addressLine1, String addressLine2, String addressLine3, String addressLine4, County county,
-			Eircode eircode) {
-		this.addressLine1 = addressLine1;
-		this.addressLine2 = addressLine2;
-		this.addressLine3 = addressLine3;
-		this.addressLine4 = addressLine4;
-		this.eircode = eircode;
-		this.county = county;
-	}
+    public String getAddressLine1() {
+        return addressLine1;
+    }
 
-	@JsonCreator
-	public Address(@JsonProperty("addressLine1") String addressLine1, @JsonProperty("addressLine2") String addressLine2,
-			@JsonProperty("addressLine3") String addressLine3, @JsonProperty("addressLine4") String addressLine4,
-			@JsonProperty("county") County county) {
-		super();
-		this.addressLine1 = addressLine1;
-		this.addressLine2 = addressLine2;
-		this.addressLine3 = addressLine3;
-		this.addressLine4 = addressLine4;
-		this.eircode = new UnknownEircode();
-		this.county = county;
-	}
+    public String getAddressLine2() {
+        return addressLine2;
+    }
 
-	public String getAddressLine1() {
-		return addressLine1;
-	}
+    public String getPostCode() {
+        return postCode;
+    }
 
-	public String getAddressLine2() {
-		return addressLine2;
-	}
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
 
-	public String getAddressLine3() {
-		return addressLine3;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public String getAddressLine4() {
-		return addressLine4;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public Eircode getEircode() {
-		return eircode;
-	}
+    public String getCounty() {
+        return county;
+    }
 
-	public County getCounty() {
-		return county;
-	}
+    public void setCounty(String county) {
+        this.county = county;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
+    public String getCountry() {
+        return country;
+    }
 
-		if (o == null || getClass() != o.getClass())
-			return false;
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-		Address address = (Address) o;
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
 
-		return new EqualsBuilder().append(addressLine1, address.addressLine1).append(addressLine2, address.addressLine2)
-				.append(addressLine3, address.addressLine3).append(addressLine4, address.addressLine4)
-				.append(eircode, address.eircode).append(county, address.county).isEquals();
-	}
+    public void setAddressLine2(String addressLine2) {
+        this.addressLine2 = addressLine2;
+    }
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(addressLine1).append(addressLine2).append(addressLine3)
-				.append(addressLine4).append(eircode).append(county).toHashCode();
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        return new EqualsBuilder().append(addressLine1, address.addressLine1)
+                                  .append(addressLine2, address.addressLine2)
+                                  .append(city, address.city)
+                                  .append(country, address.country)
+                                  .append(postCode, address.postCode)
+                                  .append(county, address.county)
+                                  .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(addressLine1)
+                                          .append(addressLine2)
+                                          .append(city)
+                                          .append(country)
+                                          .append(postCode)
+                                          .append(county)
+                                          .toHashCode();
+    }
 }

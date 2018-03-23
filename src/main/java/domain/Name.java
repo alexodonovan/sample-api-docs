@@ -1,71 +1,53 @@
 package domain;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 public class Name {
 
-	private String prefix;
-	private String forename;
-	private String forename2;
-	private String forename3;
-	private String surname;
-	private String suffix;
+    private String title;
+    private String firstName;
+    private String middleName;
+    private String surname;
 
-	public Name() {
-	}
+    public Name() {
+    }
 
-	public Name(String prefix, String forename, String forename2, String forename3, String surname, String suffix) {
-		this.prefix = prefix;
-		this.forename = forename;
-		this.forename2 = forename2;
-		this.forename3 = forename3;
-		this.surname = surname;
-		this.suffix = suffix;
-	}
+    public Name(String title, String firstName, String middleName, String surname) {
+        super();
+        this.title = title;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.surname = surname;
+    }
 
-	public String getPrefix() {
-		return prefix;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public String getForename() {
-		return forename;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getForename2() {
-		return forename2;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getForename3() {
-		return forename3;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getSurname() {
-		return surname;
-	}
+    public String getMiddleName() {
+        return middleName;
+    }
 
-	public String getSuffix() {
-		return suffix;
-	}
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
+    public String getSurname() {
+        return surname;
+    }
 
-		if (o == null || getClass() != o.getClass())
-			return false;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-		Name name = (Name) o;
-
-		return new EqualsBuilder().append(prefix, name.prefix).append(forename, name.forename)
-				.append(forename2, name.forename2).append(forename3, name.forename3).append(surname, name.surname)
-				.append(suffix, name.suffix).isEquals();
-	}
-
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(prefix).append(forename).append(forename2).append(forename3)
-				.append(surname).append(suffix).toHashCode();
-	}
 }
