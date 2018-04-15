@@ -1,5 +1,6 @@
 package api.v1;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import customer.CustomerService;
 import domain.Customer;
 import domain.CustomerTestData;
 import io.swagger.annotations.Api;
@@ -18,6 +20,9 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "v1/customer", produces = { "application/json" })
 @Api
 public class CustomerController {
+    
+    @Autowired
+    private CustomerService customerService;
 
 	@ApiOperation(value = "Add a new customer to the SCD")
 	@RequestMapping(value = "{sscn}", method = RequestMethod.PUT)
