@@ -21,24 +21,7 @@ public class CustomerService {
 
 	public void createNew(Long sscn, String ppsn, Name name, Address address, ContactDetails contactDetails,
 			Date dateOfBirth) {
-		isValid(sscn, ppsn, name, address);
-
-		CustomerDO entity = new CustomerDO();
-		entity.setId(sscn);
-		entity.setName(name);
-		entity.setAddress(address);
-		entity.setPpsNumber(ppsn);
-		entity.setContactDetails(contactDetails);
-		entity.setDateOfBirth(dateOfBirth);
-
-		customerRepository.save(entity);
-	}
-
-	private void isValid(Long sscn, String ppsn, Name name, Address address) {
-		Objects.requireNonNull(sscn);
-		Objects.requireNonNull(ppsn);
-		Objects.requireNonNull(name);
-		Objects.requireNonNull(address);
+		customerRepository.save(CustomerDO.create(sscn, name, address, ppsn, contactDetails, dateOfBirth));
 	}
 
 	public Customer findBySSCN(Long sscn) {

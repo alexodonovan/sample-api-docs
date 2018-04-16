@@ -248,4 +248,23 @@ public class CustomerDO implements Serializable {
 		return dto;
 	}
 
+	public static CustomerDO create(Long sscn, Name name, Address address, String ppsn, ContactDetails contactDetails,
+			Date dateOfBirth) {
+		CustomerDO entity = new CustomerDO();
+		entity.setId(sscn);
+		entity.setName(name);
+		entity.setAddress(address);
+		entity.setPpsNumber(ppsn);
+		entity.setContactDetails(contactDetails);
+		entity.setDateOfBirth(dateOfBirth);
+		entity.isValidNewCustomer();
+		return entity;
+	}
+
+	private void isValidNewCustomer() {
+		// name and address checked while setting
+		Objects.requireNonNull(getId());
+		Objects.requireNonNull(getPpsNumber());
+	}
+
 }
