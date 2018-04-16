@@ -4,7 +4,7 @@ This README will outline the manual steps required to set this up.
 Pre-requisites:
 * JDK8 and JRE8 installed (1.8.0_162 or higher)
 
-The proof of concept has been setup against an Oracle 12c Release 2 database.
+The proof of concept has been setup against an Oracle 12c Release 2 database on a Windows 10 platform.
 The SCD database is on Oracle 12c Release 1 (Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64 Bit Production).
 
 12c Release 2 required JDBC 8, 12 Release 1 requires JDBC 7.
