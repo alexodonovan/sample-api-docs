@@ -1,4 +1,4 @@
-package api.v1;
+package com.sample.api.v1;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import domain.Address;
-import domain.Name;
-import domain.SSCN;
+import com.sample.domain.Address;
+import com.sample.domain.Name;
+import com.sample.domain.SSCN;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 

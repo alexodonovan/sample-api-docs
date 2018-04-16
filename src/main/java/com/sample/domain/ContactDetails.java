@@ -1,4 +1,4 @@
-package domain;
+package com.sample.domain;
 
 public class ContactDetails {
 

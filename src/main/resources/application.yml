@@ -5,3 +5,16 @@ security:
 server:
   port: 8080
   contextPath: /scd-api
+
+spring:
+  datasource:
+    username: PBS
+    url: ${SCD_DB_URL}
+    password: ${SCD_DB_PASSWORD}
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+  hikari:
+    connection-timeout: 60000
+    maximum-pool-size: 5
+  
