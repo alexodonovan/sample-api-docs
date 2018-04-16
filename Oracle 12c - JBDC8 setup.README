@@ -1,0 +1,24 @@
+Due to oracle licence restrictions, the Oracle JDBC driver is not available in the public Maven repository.
+This README will outline the manual steps required to set this up.
+
+Pre-requisites:
+* JDK8 and JRE8 installed (1.8.0_162 or higher)
+
+The proof of concept has been setup against an Oracle 12c Release 2 database.
+The SCD database is on Oracle 12c Release 1 (Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64 Bit Production).
+
+12c Release 2 required JDBC 8, 12 Release 1 requires JDBC 7.
+12c Release 2 will be documented.  However, on completion of this document, this proof of concept will be re-tested against a standalone 12c Release 1 database to bring it inline with SCD.
+
+Step 1: 
+Download Oracle JDBC Driver version 8 (note this will require an Oracle account - this is standard account - full name and e-mail address only required):
+http://www.oracle.com/technetwork/database/features/jdbc/jdbc-ucp-122-3110062.html
+
+Step 2:
+Install locally on Maven:
+$ mvn install:install-file -Dfile={path/to/ojdbc8.jar} -Dgroupid=com.oracle.jdbc -Dartifact=ojdbc8 -Dversion=12.2.0.1
+
+Step 3:
+In order for scd-api-1.0-SNAPSHOT.jar file to find ojdbc8.jar, it was necessary to put this file in the lib/ext under the JRE installation (C:\Program Files\Java\jre1.8.0_162\lib\ext)
+
+Step 4: Modify pom.xml to add the dependency (checked in under this 'Oracle POC' branch)
