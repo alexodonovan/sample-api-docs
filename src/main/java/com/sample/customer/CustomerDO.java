@@ -27,32 +27,57 @@ public class CustomerDO implements Serializable {
 
     private static final long serialVersionUID = 2628568688296055596L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "object_id", unique = true)
     private Long id;
 
+    @Column(name = "timestamp")
     private Date timestamp;
+
+    @Column(name = "validation_date")
     private Date validationDate;
 
+    @Column(name = "source_object_id")
     private Long sourceId;
 
+    @Column(name = "status")
     private String status;
+
+    @Column(name = "pps_number")
     private String ppsNumber;
 
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "middle_name")
     private String middleName;
+
+    @Column(name = "surname")
     private String surname;
 
+    @Embedded
     private AddressDO address;
 
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "email_address")
     private String emailAddress;
 
+    @Column(name = "SCD_DB_FLAG")
     private String scdDbFlag;
 
+    @Column(name = "SOURCE_SYSTEM")
     private String sourceSystem;
 
+    @Column(name = "SSCN_NUMBER")
     private Long sscn;
 
     public CustomerDO() {
@@ -80,9 +105,6 @@ public class CustomerDO implements Serializable {
         return entity;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "object_id", unique = true)
     public Long getId() {
         return id;
     }
@@ -91,7 +113,6 @@ public class CustomerDO implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "SCD_DB_FLAG")
     public String getScdDbFlag() {
         return scdDbFlag;
     }
@@ -100,7 +121,6 @@ public class CustomerDO implements Serializable {
         this.scdDbFlag = scdDbFlag;
     }
 
-    @Column(name = "SOURCE_SYSTEM")
     public String getSourceSystem() {
         return sourceSystem;
     }
@@ -109,7 +129,6 @@ public class CustomerDO implements Serializable {
         this.sourceSystem = sourceSystem;
     }
 
-    @Column(name = "timestamp")
     public Date getTimestamp() {
         return timestamp;
     }
@@ -118,7 +137,6 @@ public class CustomerDO implements Serializable {
         this.timestamp = timestamp;
     }
 
-    @Column(name = "validation_date")
     public Date getValidationDate() {
         return validationDate;
     }
@@ -127,7 +145,6 @@ public class CustomerDO implements Serializable {
         this.validationDate = validationDate;
     }
 
-    @Column(name = "source_object_id")
     public Long getSourceId() {
         return sourceId;
     }
@@ -136,7 +153,6 @@ public class CustomerDO implements Serializable {
         this.sourceId = sourceId;
     }
 
-    @Column(name = "status")
     public String getStatus() {
         return status;
     }
@@ -145,7 +161,6 @@ public class CustomerDO implements Serializable {
         this.status = status;
     }
 
-    @Column(name = "pps_number")
     public String getPpsNumber() {
         return ppsNumber;
     }
@@ -154,7 +169,6 @@ public class CustomerDO implements Serializable {
         this.ppsNumber = ppsNumber;
     }
 
-    @Column(name = "date_of_birth")
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -163,7 +177,6 @@ public class CustomerDO implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    @Column(name = "title")
     public String getTitle() {
         return title;
     }
@@ -172,7 +185,6 @@ public class CustomerDO implements Serializable {
         this.title = title;
     }
 
-    @Column(name = "first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -181,7 +193,6 @@ public class CustomerDO implements Serializable {
         this.firstName = firstName;
     }
 
-    @Column(name = "middle_name")
     public String getMiddleName() {
         return middleName;
     }
@@ -190,7 +201,6 @@ public class CustomerDO implements Serializable {
         this.middleName = middleName;
     }
 
-    @Column(name = "surname")
     public String getSurname() {
         return surname;
     }
@@ -199,7 +209,6 @@ public class CustomerDO implements Serializable {
         this.surname = surname;
     }
 
-    @Embedded
     public AddressDO getAddress() {
         return address;
     }
@@ -208,7 +217,6 @@ public class CustomerDO implements Serializable {
         this.address = address;
     }
 
-    @Column(name = "phone_number")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -217,7 +225,6 @@ public class CustomerDO implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    @Column(name = "email_address")
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -226,7 +233,6 @@ public class CustomerDO implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    @Column(name = "SSCN_NUMBER")
     public Long getSscn() {
         return sscn;
     }
