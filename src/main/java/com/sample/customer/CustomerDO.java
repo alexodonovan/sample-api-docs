@@ -282,7 +282,7 @@ public class CustomerDO implements Serializable {
 
     private void isValidNewCustomer() {
         // name and address checked while setting
-        Objects.requireNonNull(getId());
+        Objects.requireNonNull(getSscn());
         Objects.requireNonNull(getPpsNumber());
     }
 
