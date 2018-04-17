@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -41,7 +43,7 @@ public class CustomerDO implements Serializable {
     @Column(name = "source_object_id")
     private Long sourceId;
 
-    @Column(name = "status")
+    @Column(name = "status", length = 16)
     private String status;
 
     @Column(name = "pps_number")
@@ -50,25 +52,16 @@ public class CustomerDO implements Serializable {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "middle_name")
-    private String middleName;
-
-    @Column(name = "surname")
-    private String surname;
-
     @Embedded
     private AddressDO address;
 
-    @Column(name = "phone_number")
+    @Embedded
+    private NameDO name;
+
+    @Column(name = "phone_number", length = 25)
     private String phoneNumber;
 
-    @Column(name = "email_address")
+    @Column(name = "email_address", length = 50)
     private String emailAddress;
 
     @Column(name = "SCD_DB_FLAG")
@@ -77,12 +70,11 @@ public class CustomerDO implements Serializable {
     @Column(name = "SOURCE_SYSTEM")
     private String sourceSystem;
 
-    @Column(name = "SSCN_NUMBER")
+    @Column(name = "SSCN_NUMBER", length = 12)
     private Long sscn;
 
     public CustomerDO() {
         // default constructor for hibernate
-        address = new AddressDO();
         timestamp = new Date();
         validationDate = new Date();
         scdDbFlag = "Y";
@@ -177,36 +169,12 @@ public class CustomerDO implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getTitle() {
-        return title;
+    public NameDO getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setName(NameDO name) {
+        this.name = name;
     }
 
     public AddressDO getAddress() {
@@ -242,12 +210,26 @@ public class CustomerDO implements Serializable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof CustomerDO)) return false;
+
+        CustomerDO rhs = (CustomerDO) obj;
+        return new EqualsBuilder().append(name, rhs.name)
+                                  .append(address, rhs.address)
+                                  .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(name)
+                                    .append(address)
+                                    .toHashCode();
+    }
+
+    @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append(id)
-                                                                          .append(title)
-                                                                          .append(firstName)
-                                                                          .append(middleName)
-                                                                          .append(surname)
+                                                                          .append(name)
                                                                           .append(address)
                                                                           .toString();
     }
@@ -255,10 +237,7 @@ public class CustomerDO implements Serializable {
     @Transient
     public void setName(Name name) {
         Objects.requireNonNull(name);
-        title = name.getTitle();
-        firstName = name.getFirstName();
-        middleName = name.getMiddleName();
-        surname = name.getSurname();
+        this.name = NameDO.create(name);
     }
 
     @Transient
@@ -278,7 +257,7 @@ public class CustomerDO implements Serializable {
     public Customer toDTO() {
         Customer dto = new Customer();
         dto.setAddress(address.toDTO());
-        dto.setName(new Name(title, firstName, middleName, surname));
+        dto.setName(name.toDTO());
         dto.setContactDetails(new ContactDetails(emailAddress, phoneNumber));
         dto.setPpsn(ppsNumber);
         dto.setSscn(getSscn());

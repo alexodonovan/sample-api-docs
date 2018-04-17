@@ -32,7 +32,8 @@ public class CustomerService {
 
     public void delete(Long sscn) {
         Objects.requireNonNull(sscn);
-        customerRepository.delete(sscn);
+        CustomerDO entity = customerRepository.findBySscn(sscn);
+        customerRepository.delete(entity);
     }
 
     @Transactional

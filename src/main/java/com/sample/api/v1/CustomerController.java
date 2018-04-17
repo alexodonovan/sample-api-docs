@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.http.ResponseEntity.HeadersBuilder;
+import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,9 +67,15 @@ public class CustomerController {
 
     @ApiOperation(value = "Delete a customer from the SCD")
     @RequestMapping(value = "{sscn}", method = RequestMethod.DELETE)
-    @ResponseStatus(code = HttpStatus.NO_CONTENT, reason = "The customer was successfully delete")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT, reason = "The customer was successfully deleted")
     public void delete(@PathVariable(value = "sscn") Long sscn) {
         customerService.delete(sscn);
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Error updating SCD: Invalid request")
+    @ExceptionHandler(JpaSystemException.class)
+    public void error() {
+        // do nothing
     }
 
 }
