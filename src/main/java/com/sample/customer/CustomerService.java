@@ -16,35 +16,35 @@ import com.sample.domain.Name;
 @Service
 public class CustomerService {
 
-	@Autowired
-	private CustomerRepository customerRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
-	public void createNew(Long sscn, String ppsn, Name name, Address address, ContactDetails contactDetails,
-			Date dateOfBirth) {
-		customerRepository.save(CustomerDO.create(sscn, name, address, ppsn, contactDetails, dateOfBirth));
-	}
+    public void createNew(Long sscn, String ppsn, Name name, Address address, ContactDetails contactDetails,
+            Date dateOfBirth) {
+        customerRepository.save(CustomerDO.create(sscn, name, address, ppsn, contactDetails, dateOfBirth));
+    }
 
-	public Customer findBySSCN(Long sscn) {
-		Objects.requireNonNull(sscn);
-		CustomerDO entity = customerRepository.findOne(sscn);
-		return null == entity ? Customer.empty() : entity.toDTO();
-	}
+    public Customer findBySSCN(Long sscn) {
+        Objects.requireNonNull(sscn);
+        CustomerDO entity = customerRepository.findBySscn(sscn);
+        return null == entity ? Customer.empty() : entity.toDTO();
+    }
 
-	public void delete(Long sscn) {
-		Objects.requireNonNull(sscn);
-		customerRepository.delete(sscn);
-	}
+    public void delete(Long sscn) {
+        Objects.requireNonNull(sscn);
+        customerRepository.delete(sscn);
+    }
 
-	@Transactional
-	public void update(Long sscn, String ppsn, Name name, Address address, ContactDetails contactDetails,
-			Date dateOfBirth) {
-		Objects.requireNonNull(sscn);
-		CustomerDO entity = customerRepository.findOne(sscn);
-		entity.setAddress(address);
-		entity.setName(name);
-		entity.setContactDetails(contactDetails);
-		entity.setDateOfBirth(dateOfBirth);
-		customerRepository.save(entity);
-	}
+    @Transactional
+    public void update(Long sscn, String ppsn, Name name, Address address, ContactDetails contactDetails,
+            Date dateOfBirth) {
+        Objects.requireNonNull(sscn);
+        CustomerDO entity = customerRepository.findBySscn(sscn);
+        entity.setAddress(address);
+        entity.setName(name);
+        entity.setContactDetails(contactDetails);
+        entity.setDateOfBirth(dateOfBirth);
+        customerRepository.save(entity);
+    }
 
 }
