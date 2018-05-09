@@ -18,8 +18,18 @@ import domain.Name;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import oracle.jdbc.*;
 import oracle.jdbc.pool.OracleDataSource;
+import exception.InvalidJSONStructure;
+import exception.KeywordNotFoundException;
+import exception.MandatoryFieldNullValueInserted;
+import exception.MaximumFieldLengthExceeded;
+import exception.SSCNNotInPrizeBondRange;
+import exception.UniqueConstraintViolated;
+import exception.WhenOthers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,21 +44,19 @@ public class CustomerController {
 	public void newCustomer(@PathVariable(value = "sscn") String sscn, @RequestBody Customer customer) throws SQLException {
 		int retCode;
 		Connection conn = null;
-    try {
-		// Insert customer
+     try {
+    	
+    	// Insert customer
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 		OracleDataSource ods = new OracleDataSource();
 		ods.setURL("jdbc:oracle:thin:peter/peter@localhost:1521/ORA12C");
 		conn = ods.getConnection();
 		
-		CallableStatement cstmt = conn.prepareCall("{CALL scd_operations.add_new_customer(?)}");
-		Clob jsonSCDDataStruct = conn.createClob();
-		ObjectMapper objectMapper = new ObjectMapper();
+		CallableStatement cstmt = conn.prepareCall("{CALL p_pb_operations.add_new_customer(?,?,?,?)}");
 		String jsonDataString = "";
+
+		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			//jsonDataString = objectMapper.writeValueAsString(customer.getAddress() + customer.getContactDetails() + customer.getName() + customer.getPpsn() + customer.getSscn());
-		    //jsonDataString = objectMapper.writeValueAsString(CustomerTestData.customer());
-			//System.out.println(objectMapper.writeValueAsString(CustomerTestData.customer()));
 			jsonDataString = "{" +
 		                     "\"address\":  "        + objectMapper.writeValueAsString(customer.getAddress())        + ", " +
 		                     "\"contactDetails\":  " + objectMapper.writeValueAsString(customer.getContactDetails()) + ", " +
@@ -61,9 +69,13 @@ public class CustomerController {
 			e.printStackTrace();
 		}
 
-		jsonSCDDataStruct.setString(1, jsonDataString);
+		cstmt.setString(1, jsonDataString);
 		
-		cstmt.setClob(1, jsonSCDDataStruct);
+		System.out.println(jsonDataString);
+
+		cstmt.registerOutParameter(2, oracle.jdbc.OracleTypes.NUMBER);
+		cstmt.registerOutParameter(3, oracle.jdbc.OracleTypes.NUMBER);
+		cstmt.registerOutParameter(4, oracle.jdbc.OracleTypes.CHAR);
 
 		cstmt.executeUpdate();
 		// conn.commit();
@@ -72,11 +84,32 @@ public class CustomerController {
 		conn.close();
 
 	} catch (SQLException e) {
-	    retCode = e.getErrorCode();
-		System.err.println("Error: " + retCode + " - " + e.getMessage());
-		conn.close();
+    	//throw new KeywordNotFoundException("Peter Exception 404 Test");
 
-		throw new RuntimeException(e);
+		conn.close();
+	    retCode = e.getErrorCode();
+		System.out.println("**********" + e.getMessage() + " **********");
+		//e.printStackTrace();
+		if (retCode == 20700) {
+			throw new InvalidJSONStructure("Invalid JSON Structure");
+		
+		} else if (retCode == 20701) {
+			throw new SSCNNotInPrizeBondRange("ORA-20701: The SSCN number (250000) supplied with the JSON data does not fall within the range of SSCNs assigned to Prize Bonds");
+
+		} else if (retCode == 20702) {
+		    throw new UniqueConstraintViolated("ORA-00001: unique constraint (AML.SSC_UK) violated\nOra-06512: at AML.P_PB_OPERATIONS.ADD_NEW_CUSTOMER, line 91\nORA-06512: at line 2");
+
+		} else if (retCode == 20703) {
+		    throw new MaximumFieldLengthExceeded("ORA-01289: value too large for column\"AML\".\"AML_P_PB_OPERATIONS.ADD_CUSTOMER\".\"ADDRESS_LINE_1 (actual: 89, maximum: 32)");
+		
+		} else if (retCode == 20704) {
+		    throw new MandatoryFieldNullValueInserted("ORA-01400: cannot insert NULL into (\"AML\".\"PB_CUSTOMER\".\"ADDRESS_LINE_1\")");
+		
+		} else {
+		    throw new WhenOthers("XXX");
+		}
+
+//		throw new RuntimeException(e);
 		}
 	}
 
@@ -145,17 +178,27 @@ public class CustomerController {
 		ods.setURL("jdbc:oracle:thin:peter/peter@localhost:1521/ORA12C");
 		conn = ods.getConnection();
 		
-		CallableStatement cstmt = conn.prepareCall("{CALL scd_operations.view_customer(?,?)}");
+		CallableStatement cstmt = conn.prepareCall("{CALL p_pb_operations.view_customer(?,?,?)}");
 		
-		cstmt.setLong(1, Long.parseLong(sscn));
-		cstmt.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
+	    int[] sscnNumberList = {10000, 10001, 10002, 10003};
+	    String[] ppsNumberList  = {"8965189U"};
+	    
+	    java.sql.Array sscnNumberArray = ((OracleConnection) conn).createOracleArray("T_NUMBER_ARRAY", sscnNumberList);
+	    java.sql.Array ppsNumberArray = ((OracleConnection) conn).createOracleArray("T_VARCHAR2_ARRAY", ppsNumberList);
+
+	    cstmt.setArray(1, sscnNumberArray);
+	    cstmt.setArray(2, ppsNumberArray);
+		cstmt.registerOutParameter(3, oracle.jdbc.OracleTypes.CURSOR);
 		
 		cstmt.executeUpdate();
 		
-		ResultSet rs = cstmt.getObject(2, ResultSet.class);
+		ResultSet rs = cstmt.getObject(3, ResultSet.class);
 		
+		rs.next(); 
+		rs.next(); // Simulate looping through the results set
 		rs.next();
-		
+		rs.next();
+
 		String firstName    = rs.getString(1);
 	    String middleName   = rs.getString(2);
 	    String surname      = rs.getString(3);
@@ -171,8 +214,8 @@ public class CustomerController {
 	    String ppsn         = rs.getString(13);
 	    String sscn2        = rs.getString(14);
 		
-		if (rs.next())                // *** Assumption: single record required - needs to be a check for > 1 row - SSCN is not a unique key *** 
-			throw new SQLException(); // Exact error message needs to be customised
+		//if (rs.next())                // *** Assumption: single record required - needs to be a check for > 1 row - SSCN is not a unique key *** 
+		//	throw new SQLException(); // Exact error message needs to be customised
 
 	    cstmt.close();
 		rs.close();
