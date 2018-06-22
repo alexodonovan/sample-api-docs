@@ -20,6 +20,10 @@ public class SSCN {
         this.sscn = sscn;
     }
 
+    public SSCN(Long sscn) {
+        this(sscn.toString());
+    }
+
     @JsonProperty("sscn")
     public String number() {
         return sscn;

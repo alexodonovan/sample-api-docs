@@ -255,13 +255,13 @@ public class CustomerDO implements Serializable {
 
     @Transient
     public Customer toDTO() {
-        Customer dto = new Customer();
+        Customer dto = Customer.empty();
         dto.setAddress(address.toDTO());
         dto.setName(name.toDTO());
         dto.setContactDetails(new ContactDetails(emailAddress, phoneNumber));
         dto.setPpsn(ppsNumber);
-        dto.setSscn(getSscn());
         dto.setDateOfBirth(getDateOfBirth());
+        dto.setSscn(getSscn());
         return dto;
     }
 

@@ -1,5 +1,8 @@
 package com.sample.domain;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "emailAddress", "phoneNumber" })
 public class ContactDetails {
 
     private String emailAddress;

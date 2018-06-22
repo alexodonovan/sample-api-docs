@@ -38,8 +38,8 @@ public class CustomerController {
     public void newCustomer(@PathVariable(value = "sscn") Long sscn, @RequestBody Customer customer) {
         requireNonNull(customer);
         checkState(customer.hasMatchingSSCN(sscn));
-        customerService.createNew(sscn, customer.getPpsn(), customer.getName(), customer.getAddress(),
-                                  customer.getContactDetails(), customer.getDateOfBirth());
+        customerService.createNew(sscn, customer.ppsn(), customer.getName(), customer.getAddress(),
+                                  customer.getContactDetails(), customer.dateOfBirth());
     }
 
     @ApiOperation(value = "Update a customer",
@@ -51,8 +51,8 @@ public class CustomerController {
         requireNonNull(sscn);
         requireNonNull(customer);
         checkState(customer.hasMatchingSSCN(sscn));
-        customerService.update(sscn, customer.getPpsn(), customer.getName(), customer.getAddress(),
-                               customer.getContactDetails(), customer.getDateOfBirth());
+        customerService.update(sscn, customer.ppsn(), customer.getName(), customer.getAddress(),
+                               customer.getContactDetails(), customer.dateOfBirth());
     }
 
     @ApiOperation(value = "View a customer's details via SSCN", response = Customer.class)

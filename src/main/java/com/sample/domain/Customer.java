@@ -7,109 +7,135 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({ "Id", "Name", "Address", "ContactDetails", "Admin" })
 public class Customer {
 
-	private Address address;
-	private Name name;
-	private String ppsn;
-	private Long sscn;
+    @JsonProperty("Address")
+    private Address address;
 
-	private ContactDetails contactDetails;
+    @JsonProperty("Name")
+    private Name name;
 
-	private Date dateOfBirth;
+    @JsonProperty("Admin")
+    private Admin admin;
 
-	public Customer() {
-	}
+    @JsonProperty("Id")
+    private SSCN sscn;
 
-	public Customer(Address address, Name name, String ppsn, Long sscn, ContactDetails contactDetails,
-			Date dateOfBirth) {
-		this.address = address;
-		this.name = name;
-		this.ppsn = ppsn;
-		this.sscn = sscn;
-		this.contactDetails = contactDetails;
-		this.dateOfBirth = dateOfBirth;
-	}
+    @JsonProperty("ContactDetails")
+    private ContactDetails contactDetails;
 
-	public static Customer empty() {
-		return new Customer();
-	}
+    private Customer() {
+    }
 
-	@JsonIgnore
-	public boolean isEmpty() {
-		return null == getSscn();
-	}
+    public Customer(Address address, Name name, Admin admin, SSCN sscn, ContactDetails contactDetails) {
+        this.address = address;
+        this.name = name;
+        this.admin = admin;
+        this.sscn = sscn;
+        this.contactDetails = contactDetails;
+    }
 
-	public ContactDetails getContactDetails() {
-		return contactDetails;
-	}
+    public static Customer empty() {
+        return new Customer();
+    }
 
-	public void setContactDetails(ContactDetails contactDetails) {
-		this.contactDetails = contactDetails;
-	}
+    @JsonIgnore
+    public boolean isEmpty() {
+        return null == getSscn();
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    public ContactDetails getContactDetails() {
+        return contactDetails;
+    }
 
-	public void setName(Name name) {
-		this.name = name;
-	}
+    public Admin getAdmin() {
+        return admin;
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
 
-	public Name getName() {
-		return name;
-	}
+    public void setContactDetails(ContactDetails contactDetails) {
+        this.contactDetails = contactDetails;
+    }
 
-	public String getPpsn() {
-		return ppsn;
-	}
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
+    public void setName(Name name) {
+        this.name = name;
+    }
 
-	public void setPpsn(String ppsn) {
-		this.ppsn = ppsn;
-	}
+    public Address getAddress() {
+        return address;
+    }
 
-	public Long getSscn() {
-		return sscn;
-	}
+    public Name getName() {
+        return name;
+    }
 
-	public void setSscn(Long sscn) {
-		this.sscn = sscn;
-	}
+    public SSCN getSscn() {
+        return sscn;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
+    public void setSscn(SSCN sscn) {
+        this.sscn = sscn;
+    }
 
-		if (o == null || getClass() != o.getClass()) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
 
-		Customer customer = (Customer) o;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		return new EqualsBuilder().append(address, customer.address).append(name, customer.name)
-				.append(ppsn, customer.ppsn).append(sscn, customer.sscn).isEquals();
-	}
+        Customer customer = (Customer) o;
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(address).append(name).append(ppsn).append(sscn).toHashCode();
-	}
+        return new EqualsBuilder().append(address, customer.address)
+                                  .append(name, customer.name)
+                                  .append(sscn, customer.sscn)
+                                  .isEquals();
+    }
 
-	@JsonIgnore
-	public boolean hasMatchingSSCN(Long sscn) {
-		Objects.requireNonNull(sscn);
-		return sscn.equals(getSscn());
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(address)
+                                          .append(name)
+                                          .append(sscn)
+                                          .toHashCode();
+    }
 
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    @JsonIgnore
+    public boolean hasMatchingSSCN(Long sscn) {
+        Objects.requireNonNull(sscn);
+        return sscn.equals(getSscn());
+    }
+
+    @JsonIgnore
+    public String ppsn() {
+        return getAdmin().getPpsn();
+    }
+
+    public void setPpsn(String ppsNumber) {
+        getAdmin().setAdmin(ppsNumber);
+    }
+
+    @JsonIgnore
+    public Date dateOfBirth() {
+        return getAdmin().getDateOfBirth();
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        getAdmin().setDateOfBirth(dateOfBirth);
+    }
+
+    public void setSscn(Long sscn) {
+        setSscn(new SSCN(sscn));
+    }
 
 }

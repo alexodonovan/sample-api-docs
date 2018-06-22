@@ -1,5 +1,8 @@
 package com.sample.domain;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "firstName", "middleName", "surname", "title" })
 public class Name {
 
     private String title;
