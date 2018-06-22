@@ -10,23 +10,37 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @JsonPropertyOrder({ "Id", "Name", "Address", "ContactDetails", "Admin" })
+@ApiModel
 public class Customer {
 
-    @JsonProperty("Address")
-    private Address address;
-
-    @JsonProperty("Name")
-    private Name name;
-
-    @JsonProperty("Admin")
-    private Admin admin;
-
+    @ApiModelProperty(name = "Id", notes = "The customer's allocated State Savings Customer Number (SSCN) ",
+            position = 0)
     @JsonProperty("Id")
     private SSCN sscn;
 
+    @ApiModelProperty(name = "Name",
+            notes = "Name, proven at time of onboarding. Trusted as source of truth for name of customer across State Savings products.",
+            position = 1)
+    @JsonProperty("Name")
+    private Name name;
+
+    @ApiModelProperty(name = "Address",
+            notes = "Address, proven at time of onboarding. Trusted as source of truth for address of customer across State Savings products.",
+            position = 2)
+    @JsonProperty("Address")
+    private Address address;
+
+    @ApiModelProperty(name = "ContactDetails", position = 3)
     @JsonProperty("ContactDetails")
     private ContactDetails contactDetails;
+
+    @ApiModelProperty(name = "Admin", position = 4)
+    @JsonProperty("Admin")
+    private Admin admin;
 
     private Customer() {
     }
@@ -121,8 +135,9 @@ public class Customer {
         return getAdmin().getPpsn();
     }
 
+    @JsonIgnore
     public void setPpsn(String ppsNumber) {
-        getAdmin().setAdmin(ppsNumber);
+        getAdmin().setPpsn(ppsNumber);
     }
 
     @JsonIgnore
@@ -130,10 +145,12 @@ public class Customer {
         return getAdmin().getDateOfBirth();
     }
 
+    @JsonIgnore
     public void setDateOfBirth(Date dateOfBirth) {
         getAdmin().setDateOfBirth(dateOfBirth);
     }
 
+    @JsonIgnore
     public void setSscn(Long sscn) {
         setSscn(new SSCN(sscn));
     }

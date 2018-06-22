@@ -20,10 +20,6 @@ public class Admin {
         return ppsn;
     }
 
-    public void setAdmin(String ppsn) {
-        this.ppsn = ppsn;
-    }
-
     public Date getDateOfBirth() {
         return dateOfBirth;
     }

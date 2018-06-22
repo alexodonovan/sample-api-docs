@@ -7,15 +7,22 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModelProperty;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SSCN {
 
-    private final String sscn;
+    @ApiModelProperty(notes = "The customer's allocated State Savings Customer Number (SSCN) ", position = 0)
+    private String sscn;
 
-    @JsonCreator
-    protected SSCN(@JsonProperty("sscn") String sscn) {
+    public SSCN() {
+        // default constructor
+    }
+
+    protected SSCN(String sscn) {
         checkNotNull(sscn);
         this.sscn = sscn;
     }
@@ -24,9 +31,17 @@ public class SSCN {
         this(sscn.toString());
     }
 
-    @JsonProperty("sscn")
     public String number() {
         return sscn;
+    }
+
+    @JsonProperty("sscn")
+    public String getSscn() {
+        return sscn;
+    }
+
+    public void setSscn(String sscn) {
+        this.sscn = sscn;
     }
 
     @Override
