@@ -1,5 +1,8 @@
 package com.sample.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Date;
 
 public class Admin {
@@ -30,6 +33,14 @@ public class Admin {
 
     public void setPpsn(String ppsn) {
         this.ppsn = ppsn;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("ppsn", ppsn)
+                .append("dateOfBirth", dateOfBirth)
+                .toString();
     }
 
 }

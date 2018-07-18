@@ -45,6 +45,7 @@ public class CustomerService {
         entity.setName(name);
         entity.setContactDetails(contactDetails);
         entity.setDateOfBirth(dateOfBirth);
+        entity.setPpsNumber(ppsn);
         customerRepository.save(entity);
     }
 

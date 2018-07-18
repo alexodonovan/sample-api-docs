@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @JsonPropertyOrder({ "addressLine1", "addressLine2", "city", "county", "postCode" })
 public class Address {
@@ -89,5 +91,16 @@ public class Address {
 	public int hashCode() {
 		return new HashCodeBuilder(17, 37).append(addressLine1).append(addressLine2).append(city).append(postCode)
 				.append(county).toHashCode();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("addressLine1", addressLine1)
+				.append("addressLine2", addressLine2)
+				.append("city", city)
+				.append("county", county)
+				.append("postCode", postCode)
+				.toString();
 	}
 }

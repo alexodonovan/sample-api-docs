@@ -1,6 +1,8 @@
 package com.sample.domain;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @JsonPropertyOrder({ "firstName", "middleName", "surname", "title" })
 public class Name {
@@ -51,6 +53,16 @@ public class Name {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("title", title)
+                .append("firstName", firstName)
+                .append("middleName", middleName)
+                .append("surname", surname)
+                .toString();
     }
 
 }

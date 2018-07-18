@@ -1,6 +1,8 @@
 package com.sample.domain;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @JsonPropertyOrder({ "emailAddress", "phoneNumber" })
 public class ContactDetails {
@@ -33,4 +35,12 @@ public class ContactDetails {
         this.phoneNumber = phoneNumber;
     }
 
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("phoneNumber", phoneNumber)
+                .append("emailAddress", emailAddress)
+                .toString();
+    }
 }

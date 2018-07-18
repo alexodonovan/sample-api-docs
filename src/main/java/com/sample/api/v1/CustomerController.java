@@ -3,6 +3,8 @@ package com.sample.api.v1;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Objects.requireNonNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,8 @@ import io.swagger.annotations.ApiOperation;
 @Api
 public class CustomerController {
 
+    private static Logger logger = LoggerFactory.getLogger(CustomerController.class);
+
     @Autowired
     private CustomerService customerService;
 
@@ -36,6 +40,7 @@ public class CustomerController {
     @RequestMapping(value = "{sscn}", method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.CREATED, reason = "The new customer was sucessfully created")
     public void newCustomer(@PathVariable(value = "sscn") Long sscn, @RequestBody Customer customer) {
+        logger.info("#####put request {} with {}", sscn, customer);
         requireNonNull(customer);
         checkState(customer.hasMatchingSSCN(sscn));
         customerService.createNew(sscn, customer.ppsn(), customer.getName(), customer.getAddress(),
@@ -47,12 +52,14 @@ public class CustomerController {
                     + "For discussion, edit a customer's SSCN?")
     @RequestMapping(value = "/{sscn}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void update(@PathVariable(value = "sscn") Long sscn, @RequestBody Customer customer) {
+    public Customer update(@PathVariable(value = "sscn") Long sscn, @RequestBody Customer customer) {
+        logger.info("#####post request {} with {}", sscn, customer);
         requireNonNull(sscn);
         requireNonNull(customer);
         checkState(customer.hasMatchingSSCN(sscn));
         customerService.update(sscn, customer.ppsn(), customer.getName(), customer.getAddress(),
                                customer.getContactDetails(), customer.dateOfBirth());
+        return customer;
     }
 
     @ApiOperation(value = "View a customer's details via SSCN", response = Customer.class)
@@ -60,6 +67,7 @@ public class CustomerController {
     @ResponseBody
     public ResponseEntity<?> sscn(@PathVariable(value = "sscn") Long sscn) {
         Customer customer = customerService.findBySSCN(sscn);
+        logger.info("#####get request {} with {}", sscn, customer);
         BodyBuilder ok = ResponseEntity.ok();
         HeadersBuilder<?> notFound = ResponseEntity.notFound();
         return customer.isEmpty() ? notFound.build() : ok.body(customer);
@@ -69,12 +77,14 @@ public class CustomerController {
     @RequestMapping(value = "{sscn}", method = RequestMethod.DELETE)
     @ResponseStatus(code = HttpStatus.NO_CONTENT, reason = "The customer was successfully deleted")
     public void delete(@PathVariable(value = "sscn") Long sscn) {
+        logger.info("#####delete request with {}", sscn);
         customerService.delete(sscn);
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Error updating SCD: Invalid request")
     @ExceptionHandler(JpaSystemException.class)
     public void error() {
+        logger.info("#####error");
         // do nothing
     }
 

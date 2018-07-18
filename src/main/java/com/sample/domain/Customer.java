@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @JsonPropertyOrder({ "Id", "Name", "Address", "ContactDetails", "Admin" })
 @ApiModel
@@ -127,7 +129,18 @@ public class Customer {
     @JsonIgnore
     public boolean hasMatchingSSCN(Long sscn) {
         Objects.requireNonNull(sscn);
-        return sscn.equals(getSscn());
+        return sscn.equals(Long.valueOf(getSscn().number()));
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("sscn", sscn)
+                .append("name", name)
+                .append("address", address)
+                .append("admin", admin)
+                .append("contactDetails", contactDetails)
+                .toString();
     }
 
     @JsonIgnore
