@@ -24,4 +24,4 @@ When the application has built successfully it can be started with:
 mvn spring-boot:run 
 ``` 
  
-You can then check the swagger docs for the [REST API](http://localhost:8080/scd-api/swagger-ui.html) 
+You can then check the swagger docs for the [REST API](http://localhost:8095/scd-api/swagger-ui.html) 
