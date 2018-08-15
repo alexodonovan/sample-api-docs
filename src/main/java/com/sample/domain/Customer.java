@@ -45,9 +45,11 @@ public class Customer {
     private Admin admin;
 
     private Customer() {
+        this.admin = new Admin();
     }
 
     public Customer(Address address, Name name, Admin admin, SSCN sscn, ContactDetails contactDetails) {
+        super();
         this.address = address;
         this.name = name;
         this.admin = admin;

@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+
+  scd-api:
+    image: 10.120.16.42:5000/prizebonds/scd-api:latest
+    ports:
+    - "8096:8096"
+    - "5096:5096"
+    deploy:
+      resources:
+        limits:
+          memory: 1500m
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "10.120.250.91:24224"
+        tag: scd-api
+    environment:
+    - "SERVER_PORT=8096"
+    - "DEBUG_PORT=5096"
+    - "SPRING_PROFILES_ACTIVE=swarmqat"
+    - "SPRING_APPLICATION_JSON='{\"user\":{\"name\": \"'${USER}'\"}}'"
+    - "PB_ORACLE_PREFIX=qat"
+    - "ENCRYPTION_KEY=165u49eR87t248q6"
+    networks:
+    - prime-ecosystem
+
+networks:
+  prime-ecosystem:
+    external: true
